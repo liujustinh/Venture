@@ -3,7 +3,6 @@ const Message = require('../models/message')
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 
-
 messagesRouter.get('/', async (request, response, next) => {
   try {
     const messages = await Message.find({}).populate("user", {
@@ -20,9 +19,9 @@ messagesRouter.post('/', async (request, response, next) => {
   const body = request.body
   const token = request.token
   console.log(`token: ${token}`)
-  if (body.content == null || body.sender == null || body.receiver) {
+  if (body.content == null || body.sender == null || body.receivers || body.chatRoom_id) {
     return response.status(400).json({
-      error: 'MESSAGE_ERROR_CREATION:content, sender, or receiver missing'
+      error: 'MESSAGE_ERROR_CREATION:content, sender, or receivers missing'
     })
   }
   try {
@@ -38,7 +37,8 @@ messagesRouter.post('/', async (request, response, next) => {
     const message = new Message({
       content: body.content,
       sender: body.sender,
-      receiver: body.receiver,
+      receivers: body.receivers,
+      chatRoom_id: body.chatRoom_id,
       date: new Date()
     })
 

@@ -1,0 +1,11 @@
+.chat-button {
+    position: relative;
+    float: center;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.chat-page {
+    display: flex;
+    margin-top: 50px;
+}

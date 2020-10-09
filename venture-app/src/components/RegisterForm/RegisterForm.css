@@ -1,0 +1,15 @@
+.form-page {
+    position: relative;
+    top: 80px;
+    padding: 20px;
+    width: 40%;
+}
+
+.form-title {
+    font-size: auto;
+    text-align: center;
+}
+
+.form-button {
+    width: 100%;
+}

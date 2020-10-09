@@ -6,6 +6,7 @@ const mongoose = require('mongoose')
 const loginRouter = require('./controllers/login')
 const usersRouter = require('./controllers/users')
 const messagesRouter = require('./controllers/messages')
+const chatsRouter = require('./controllers/chats')
 const jwtHelper = require('./utils/jwt_helper')
 
 mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -23,6 +24,7 @@ app.use(express.json())
 app.use('/api/login', loginRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/messsages', messagesRouter)
+app.use('/api/chats', chatsRouter)
 
 if (process.env.NODE_ENV === 'test') {
     const testingRouter = require('./controllers/testing')

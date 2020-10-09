@@ -1,29 +1,42 @@
 import React, { useState } from 'react';
 import './App.css';
 import { useDispatch } from 'react-redux'
-import LoginForm from './components/LoginForm'
-import NavigationBar from './components/NavigationBar'
+import LoginForm from './components/LoginForm/LoginForm'
+import NavigationBar from './components/NavigationBar/NavigationBar'
+import ChatPage from './components/ChatPage/ChatPage'
+import MessagesPage from './components/MessagesPage/MessagesPage'
+import io from 'socket.io-client'
+
 import {
   BrowserRouter as Router,
   Switch, Route, Link, useRouteMatch, useHistory
 } from 'react-router-dom'
-import RegisterForm from './components/RegisterForm';
+import RegisterForm from './components/RegisterForm/RegisterForm';
+
+let socket
 
 function App() {
   const [user, setUser] = useState(null)
+  const username = window.localStorage.getItem('loggedUser')
   const dispatch = useDispatch()
 
   return (
     <div>
-      <NavigationBar user={user}></NavigationBar>
-      <Switch>
-        <Route path='/login'>
-          <LoginForm setUser={setUser}></LoginForm>
-        </Route>
-        <Route path='/register'>
-          <RegisterForm></RegisterForm>
-        </Route>
-      </Switch>
+        <NavigationBar user={user}></NavigationBar>
+        <Switch>
+          <Route path='/login'>
+            <LoginForm setUser={setUser}/>
+          </Route>
+          <Route path='/register'>
+            <RegisterForm/>
+          </Route>
+          {username && <Route path='/chat'>
+            <ChatPage/>
+          </Route>}
+          {username && <Route path='/chat'>
+            <MessagesPage/>
+          </Route>}
+        </Switch>
     </div>
   );
 }

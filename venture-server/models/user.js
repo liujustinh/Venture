@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
     displayName: {
         type: String 
     },
-    messages: [{ type: mongoose.Schema.Types.ObjectId, ref: "Message" }],
+    chats: [{ type: mongoose.Schema.Types.ObjectId, ref: "Chat" }],
 });
   
 userSchema.plugin(uniqueValidator);

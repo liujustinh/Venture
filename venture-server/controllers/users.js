@@ -24,7 +24,7 @@ const validateReqBody = (body) => {
     }
 }
 
-//SEND MESSAGES TO USER
+//SEND MESSAGES TO USER (CURRENTLY BROKEN BC TOOK MESSAGE ARRAY OUT OF USERS)
 usersRouter.get('/', async (request, response, next) => {
     try {
         const users = await User.find({}).populate('messages', {

@@ -11,12 +11,16 @@ const messageSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId, ref: "User",
         required: true
     },
-    receiver: {
-        type: mongoose.Schema.Types.ObjectId, ref: "User",
+    receivers: [{
+        user: {type: mongoose.Schema.Types.ObjectId, ref: "User", required: true}, seen: Boolean
+    },],
+    chatRoom_id: {
+        type: mongoose.Schema.ObjectId,
         required: true
     },
     date: {
-        type: Date, 
+        type: Date,
+        default: Date.now, 
         required: true
     }
 })
