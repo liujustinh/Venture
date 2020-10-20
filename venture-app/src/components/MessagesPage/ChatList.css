@@ -1,0 +1,12 @@
+.sidebar {
+    position: relative;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 150px;
+}
+
+.online-badge {
+    position: absolute;
+    right: 0;
+}

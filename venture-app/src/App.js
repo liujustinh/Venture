@@ -17,7 +17,7 @@ let socket
 
 function App() {
   const [user, setUser] = useState(null)
-  const username = window.localStorage.getItem('loggedUser')
+  const loggedUser = window.localStorage.getItem('loggedUser')
   const dispatch = useDispatch()
 
   return (
@@ -30,11 +30,15 @@ function App() {
           <Route path='/register'>
             <RegisterForm/>
           </Route>
-          {username && <Route path='/chat'>
+          {loggedUser && <Route path='/chat'>
             <ChatPage/>
           </Route>}
-          {username && <Route path='/chat'>
+          {loggedUser && <Route path='/messages'>
             <MessagesPage/>
+          </Route>}
+          {loggedUser && <Route path='/'>
+            Welcome
+            <ChatPage/>
           </Route>}
         </Switch>
     </div>

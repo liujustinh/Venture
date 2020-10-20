@@ -3,13 +3,20 @@ const Message = require('../models/message')
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 
-messagesRouter.get('/', async (request, response, next) => {
+messagesRouter.get('/:id', async (request, response, next) => {
+  const roomID = request.params.id
+  console.log('messagerouter roomName: ', roomID)
+  if (!roomID || roomID === null) {
+    return response.status(401).json({ error: 'invalid room' })
+  }
+  const token = request.token
   try {
-    const messages = await Message.find({}).populate("user", {
-      username: 1,
-      displayName: 1,
-    })
-    response.json(messages.map((message) => message.toJSON()));
+    const decodedToken = jwt.verify(token, process.env.SECRET)
+    if (!token || !decodedToken.id) {
+        return response.status(401).json({ error: 'token missing or invalid' })
+    }
+    const messages = await Message.find().where('chatRoom_id').in(roomID).exec()
+    response.status(201).json(messages.map((message) => message.toJSON()));
   } catch (error) {
       next(error);
   }
@@ -21,7 +28,7 @@ messagesRouter.post('/', async (request, response, next) => {
   console.log(`token: ${token}`)
   if (body.content == null || body.sender == null || body.receivers || body.chatRoom_id) {
     return response.status(400).json({
-      error: 'MESSAGE_ERROR_CREATION:content, sender, or receivers missing'
+      error: 'MESSAGE_ERROR_CREATION: content, sender, or receivers missing'
     })
   }
   try {
@@ -43,12 +50,12 @@ messagesRouter.post('/', async (request, response, next) => {
     })
 
     const savedMessage = await message.save()
-    user.messages = user.messages.concat(savedMessage._id)
-    await user.save()
-    await savedMessage
+    //user.messages = user.messages.concat(savedMessage._id)
+    //await user.save()
+    /*await savedMessage
       .populate({ path: "user", select: ["displayName", "username"]})
-      .execPopulate()
-    response.status(201).json(savedMessage.toJSON())
+      .execPopulate()*/
+    return response.status(201).json(savedMessage.toJSON())
     }
     catch(exception) {
       next(exception)

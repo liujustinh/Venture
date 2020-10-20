@@ -1,12 +1,14 @@
 import React from 'react'
 import { Navbar, Nav, Form, FormControl, Button } from 'react-bootstrap'
 import { BrowserRouter as Router, Switch, Route, Link, useRouteMatch, useHistory} from 'react-router-dom'
+import tokenService from '../../services/jwt'
 
 const NavigationBar = (props) => {
     const user = window.localStorage.getItem('loggedUser')
 
     const handleLogout = (e) => {
         window.localStorage.clear()
+        //tokenService.clearToken()
     }
     return (
         <Navbar expand='lg' bg='dark' variant='dark'>

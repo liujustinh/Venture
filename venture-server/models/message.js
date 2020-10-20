@@ -7,6 +7,11 @@ const messageSchema = new mongoose.Schema({
         type: String, 
         required: true
     },
+    sender_name : {
+        type: String,
+        required: true,
+        unique: true
+    },
     sender: {
         type: mongoose.Schema.Types.ObjectId, ref: "User",
         required: true
@@ -15,7 +20,7 @@ const messageSchema = new mongoose.Schema({
         user: {type: mongoose.Schema.Types.ObjectId, ref: "User", required: true}, seen: Boolean
     },],
     chatRoom_id: {
-        type: mongoose.Schema.ObjectId,
+        type: mongoose.Schema.ObjectId, ref: "Chat",
         required: true
     },
     date: {

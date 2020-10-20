@@ -3,7 +3,7 @@ import { Form,Button } from 'react-bootstrap'
 import { useField } from '../../hooks/useField'
 import { useHistory } from 'react-router-dom'
 import loginService from '../../services/login'
-import messageService from '../../services/messages'
+import tokenService from '../../services/jwt'
 import {Container} from 'react-bootstrap'
 import './LoginForm.css'
 
@@ -26,8 +26,14 @@ const LoginForm = ({setUser}) => {
         try {
             console.log(`Username: ${username.value}  Password: ${password.value}`)
             const user = await loginService.login({username: username.value, password: password.value})
-            window.localStorage.setItem('loggedUser', JSON.stringify(user))
-            messageService.setToken(user.token)
+            //const userCookie = {username: user.username, uid: user.uid, token: user.token}
+            window.localStorage.setItem('loggedUser', user.username)
+            window.localStorage.setItem('userID', user.uid)
+            window.localStorage.setItem('userToken', `bearer ${user.token}`)
+            //tokenService.setCredentials(user.username, user.uid, user.token)
+            //console.log(tokenService.getUsername(), tokenService.getUID())
+            //tokenService.setToken(user.token)
+            //tokenService.setUID(user.uid)
             setUser(user)
             console.log(`${username.value} logged in!`)
             resetForm()
@@ -40,18 +46,18 @@ const LoginForm = ({setUser}) => {
     }
 
     return (
-        <Container className='form-page'>
+        <Container className='login-form'>
             <Form onSubmit={handleLogin}>
                 <h1 className='form-title'>
                     Member Login
                 </h1>
                 <Form.Group controlId='formBasicUsername'>
-                    <Form.Label>Username</Form.Label>
+                    <Form.Label style={{fontFamily: "“Helvetica Neue”, Helvetica, Arial, sans-serif"}}>Username</Form.Label>
                     <Form.Control {...username} placeholder='Enter username'/>
                 </Form.Group>
 
                 <Form.Group controlId='formBasicPassword'>
-                    <Form.Label>Password</Form.Label>
+                    <Form.Label style={{fontFamily: "“Helvetica Neue”, Helvetica, Arial, sans-serif"}}>Password</Form.Label>
                     <Form.Control {...password} placeholder='Password'/>
                 </Form.Group>
                 <Button variant='primary' type='submit' className='form-button'>Login</Button>

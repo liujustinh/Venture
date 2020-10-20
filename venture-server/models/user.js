@@ -13,9 +13,10 @@ const userSchema = new mongoose.Schema({
         type: String 
     },
     chats: [{ type: mongoose.Schema.Types.ObjectId, ref: "Chat" }],
+    familiar_users: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}]
 });
   
-userSchema.plugin(uniqueValidator);
+userSchema.plugin(uniqueValidator)
 
 userSchema.set('toJSON', {
     transform: (document, returnedObject) => {

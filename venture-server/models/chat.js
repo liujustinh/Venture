@@ -1,10 +1,17 @@
 const mongoose = require('mongoose')
+const uniqueValidator = require('mongoose-unique-validator')
 
 const chatSchema = new mongoose.Schema({
+    name: {
+      type: String,
+      unique: true
+    },
+    admin: {type: mongoose.Schema.Types.ObjectId, ref: "Users"},
     participants: [{type: mongoose.Schema.Types.ObjectId, ref: "Users"}],
     last_message: Number,
-    _id: {type: mongoose.Schema.ObjectId}
 })
+
+chatSchema.plugin(uniqueValidator)
 
 chatSchema.set('toJSON', {
     transform: (document, returnedObject) => {

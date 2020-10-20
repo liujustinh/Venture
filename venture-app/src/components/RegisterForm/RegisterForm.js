@@ -33,7 +33,7 @@ const RegisterForm = (props) => {
             console.log(`Username: ${username.value}  Password: ${password.value}`)
             const user = await userService.createUser({username: username.value, password: password.value})
             resetForm()
-            history.push('/')
+            history.push('/login')
         }
         catch (exception) {
             console.log(exception)
