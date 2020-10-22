@@ -7,21 +7,20 @@ const messageSchema = new mongoose.Schema({
         type: String, 
         required: true
     },
-    sender_name : {
-        type: String,
-        required: true,
-        unique: true
-    },
     sender: {
         type: mongoose.Schema.Types.ObjectId, ref: "User",
         required: true
     },
-    receivers: [{
-        user: {type: mongoose.Schema.Types.ObjectId, ref: "User", required: true}, seen: Boolean
-    },],
+    receivers: [{type: mongoose.Schema.Types.ObjectId, ref: "User", required: true
+    }],
     chatRoom_id: {
         type: mongoose.Schema.ObjectId, ref: "Chat",
         required: true
+    },
+    sender_name : {
+        type: String,
+        required: true,
+        sparse: true
     },
     date: {
         type: Date,

@@ -3,9 +3,9 @@ import tokenService from './jwt'
 
 const baseUrl = 'http://localhost:3003/api/messages'
 
-const token = window.localStorage.getItem('userToken')
 
 const getAll = async (id) => {
+  const token = window.localStorage.getItem('userToken')
   const config = { headers: { Authorization: token } };
   console.log('config: ', config)
   const response = await axios.get(`${baseUrl}/${id}`, config)
@@ -13,6 +13,7 @@ const getAll = async (id) => {
 }
 
 const create = async (newMessage) => {
+  const token = window.localStorage.getItem('userToken')
   const config = { headers: { Authorization: token } };
   const response = await axios.post(baseUrl, newMessage, config);
 
@@ -20,6 +21,7 @@ const create = async (newMessage) => {
 }
 
 const remove = async (id) => {
+  const token = window.localStorage.getItem('userToken')
   const config = { headers: { Authorization: token } };
   const response = await axios.delete(`${baseUrl}/${id}`, config);
 

@@ -26,14 +26,10 @@ const LoginForm = ({setUser}) => {
         try {
             console.log(`Username: ${username.value}  Password: ${password.value}`)
             const user = await loginService.login({username: username.value, password: password.value})
-            //const userCookie = {username: user.username, uid: user.uid, token: user.token}
             window.localStorage.setItem('loggedUser', user.username)
             window.localStorage.setItem('userID', user.uid)
             window.localStorage.setItem('userToken', `bearer ${user.token}`)
-            //tokenService.setCredentials(user.username, user.uid, user.token)
-            //console.log(tokenService.getUsername(), tokenService.getUID())
-            //tokenService.setToken(user.token)
-            //tokenService.setUID(user.uid)
+            console.log('userToken: ', window.localStorage.getItem('userToken'))
             setUser(user)
             console.log(`${username.value} logged in!`)
             resetForm()

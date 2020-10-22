@@ -52,7 +52,9 @@ const joinRoom = async ({uid, roomName}) => {
     try {
         const existingChat = createRoom({uid, roomName})
         if (existingChat) {
-            existingChat.participants = existingChat.participants.concat(uid)
+            let updatedParticipants = existingChat.participants
+            updatedParticipants = updatedParticipants.concat(uid)
+            existingChat.participants = updatedParticipants
             const updatedChat = await existingChat.save()
         }
     }
@@ -61,18 +63,33 @@ const joinRoom = async ({uid, roomName}) => {
     }
 }
 
-const saveMsg = async ({uid, room, message}) => {
+const getRoomByID = async ({roomID}) => {
     try {
-        const user = User.findById(uid)
-        const chatroom = Chat.find({'name': {room}})
+        const chatRoom = await Chat.findById(roomID)
+        if (chatRoom) {
+            return chatRoom.name;
+        }
+    }
+    catch(exception) {
+        console.log(exception)
+    }
+}
+
+const saveMsg = async ({uid, roomID, message}) => {
+    try {
+        const user = await User.findById(uid)
+        const chatroom = await Chat.findById(roomID)
         const receivers = chatroom.participants.filter(participant => participant._id !== uid)
+        console.log('receivers: ', receivers)
         const newMsg = new Message({
             content: message,
+            sender_name: user.username,
             sender: user._id,
             receivers: receivers,
             chatRoom_id: chatroom._id,
         })
         const savedMsg = await newMsg.save()
+        return savedMsg
     }
     catch (exception) {
         console.log(exception)
@@ -88,5 +105,6 @@ module.exports = {
     queueUser,
     createRoom,
     joinRoom,
-    saveMsg
+    saveMsg,
+    getRoomByID
 }

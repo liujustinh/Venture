@@ -1,0 +1,1 @@
+{"_id":{"$oid":"5f8d8b4acfb5dee0b62bab23"},"content":"this is a test","sender_name":"iamajiu","sender":{"$oid":"5f7c7ec793387b51a0e6b8b8"},"receivers":[{"$oid":"5f7d4841634d6111143d8190"}],"chatRoom_id":{"$oid":"5f8d4f83f5432e909215bfec"}}

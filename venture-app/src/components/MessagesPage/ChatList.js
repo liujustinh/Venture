@@ -3,7 +3,7 @@ import React from 'react'
 import { ListGroup, Badge } from 'react-bootstrap'
 import './ChatList.css'
 
-const ChatList = ({chats, handleRoomID}) => {
+const ChatList = ({chats}) => {
     const username = window.localStorage.getItem('loggedUser')
 
     return (

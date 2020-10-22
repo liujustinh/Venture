@@ -3,22 +3,47 @@ import { Container, Button, Form } from 'react-bootstrap'
 import { useField } from '../../hooks/useField'
 import { Link, useHistory } from 'react-router-dom'
 import tokenService from '../../services/jwt'
+import chatService from '../../services/chats'
 import './ChatPage.css'
 
 const ChatPage = (props) => {
-    const [roomName, resetRoomName] = useField('text')
+    const [newRoomName, setNewRoomName] = useField('text')
+    const [oldRoomName, setOldRoomName] = useField('text')
     const history = useHistory()
 
-    const handleJoin = async (e) => {
+    const handleJoinRoom = async (e) => {
         e.preventDefault()
-        if (!roomName.value || roomName.value.length == 0) {
+        if (!oldRoomName.value || oldRoomName.value.length == 0) {
             console.log('Room name missing!')
             return
         }
         try {
-            console.log(`Attempting to join room: ${roomName.value}`)
+            console.log(`Attempting to join room: ${oldRoomName.value}`)
             const username = window.localStorage.getItem('loggedUser')
-            history.push(`/messages?name=${username}&room=${roomName.value}`)
+            const roomID = await chatService.joinChat({room: oldRoomName})
+            setOldRoomName('')
+            history.push(`/messages?name=${username}&roomID=${roomID}`)
+        }
+        catch(exception) {
+            console.log(exception)
+        }
+    }
+
+    const handleCreateRoom = async (e) => {
+        e.preventDefault()
+        if (!newRoomName.value || newRoomName.value.length == 0) {
+            console.log('Room name missing!')
+            return
+        }
+        try {
+            console.log(`Attempting to create room: ${newRoomName.value}`)
+            const username = window.localStorage.getItem('loggedUser')
+            const chat = {
+                name: newRoomName,
+            }
+            const roomID = await chatService.createChat(chat)
+            setNewRoomName('')
+            history.push(`/messages?name=${username}&roomID=${roomID}`)
         }
         catch(exception) {
             console.log(exception)
@@ -30,12 +55,20 @@ const ChatPage = (props) => {
             <Button className='chat-button'>
                 Connect with a random user
             </Button>
-            <Form onSubmit={handleJoin} className='chat-button'>
+            <Form onSubmit={handleJoinRoom} className='chat-button'>
                 <Form.Group controlId='formBasicUsername'>
-                    <Form.Control {...roomName} placeholder='Enter room name'/>
+                    <Form.Control {...oldRoomName} placeholder='Enter room name'/>
                 </Form.Group>
                     <Button type='submit'>
-                        Join/Create ChatRoom
+                        Join ChatRoom
+                    </Button>
+            </Form>
+            <Form onSubmit={handleCreateRoom} className='chat-button'>
+                <Form.Group controlId='formBasicUsername'>
+                    <Form.Control {...newRoomName} placeholder='Enter room name'/>
+                </Form.Group>
+                    <Button type='submit'>
+                        Create ChatRoom
                     </Button>
             </Form>
         </div>

@@ -11,34 +11,58 @@ let clients = []
 
 
 io.on('connect', (socket) => {
-    clients.concat(socket.id)
-    console.log('Client connected', clients)
 
-    socket.on('join-random', ({ username, uid }, callback) => {
-        console.log('Join random: ', username)
+    socket.on('user-info', ({uid, name, roomID}, callback) => {
+        //console.log('Receiving user info: ', userID, name, roomID)
+        let socketID = socket.id
+        if (clients.filter(client => client.uid === uid)) {
+            console.log('alrdy have this client')
+            clients = clients.filter(client => client.uid !== uid)
+        }
+        clients = clients.concat({name, uid, socketID })
+        console.log('clients: ', clients)
+    })
+
+    socket.on('join-random', ({ name, uid }, callback) => {
+        console.log('Join random: ', name)
         
     })
 
-    /*socket.on('create-room', ({ username, uid, room }, callback) => {
-        console.log('Create room:', username, room)
-        socket.join(room)
-    })*/
+    socket.on('create-room', ({ name, uid, room}, callback) => {
+        console.log('Create room: ', name, uid, room)
+    })
 
-    socket.on('join-create-room', ({ username, uid, room }, callback) => {
-        console.log('Join room: ', username, room)
+    socket.on('join-room', ({ name, uid, room }, callback) => {
+        console.log('Join room: ', name, room)
         socketHelper.joinRoom({uid, room})
         socket.join(room)
     })
 
-    socket.on('send-message', ({ username, uid, room, message }, callback) => {
-        console.log('Send message: ', username, room, message)
-        socketHelper.saveMsg({uid, room, message})
-        io.to(room).emit('message', {user: username, message: message, room: room})
+    socket.on('enter-room', ({ name, uid, roomID}, callback) => {
+        console.log('Enter room: ', name, uid, roomID)
+        socket.join(roomID)
+    })
+
+    socket.on('send-message', ({ name, uid, roomID, message }, callback) => {
+        console.log('Send message: ', name, uid, roomID, message)
+        socketHelper.saveMsg({uid, roomID, message})
+        const savedMsg = {
+            content: message,
+            sender_name: name,
+            chatRoom_id: roomID,
+            date: new Date(),
+            id: Math.random().toString(36).substr(2, 9)
+        }
+        console.log('savedMsg: ', savedMsg)
+        io.to(roomID).emit('message', savedMsg)
     })
 
 
     socket.on('disconnect', () => {
         console.log('User disconnected')
+        let discSockID = socket.id
+        clients = clients.filter(client => client.socketID !== discSockID)
+        console.log('clients after disconnect: ', clients)
     })
 })
 
