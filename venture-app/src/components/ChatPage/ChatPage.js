@@ -50,9 +50,14 @@ const ChatPage = (props) => {
         }
     }
 
+    const handleRandomRoom = (event) => {
+        event.preventDefault()
+        history.push('/messages?random=true')
+    }
+
     return (
         <div className='chat-page'>
-            <Button className='chat-button'>
+            <Button onClick={handleRandomRoom} className='chat-button'>
                 Connect with a random user
             </Button>
             <Form onSubmit={handleJoinRoom} className='chat-button'>

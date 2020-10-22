@@ -16,8 +16,10 @@ const MessagesPage = () => {
     const [message, setMessage] = useState('')
     const [messages, setMessages] = useState([])
     const uid = window.localStorage.getItem('userID')
+    const username = window.localStorage.getItem('loggedUser')
     const { name, roomID } = queryString.parse(window.location.search)
 
+    //handle/maintain socket connections
     useEffect(() => {
         socket = io(SOCKET_URL)
         const { name, roomID } = queryString.parse(window.location.search)
@@ -27,9 +29,10 @@ const MessagesPage = () => {
             socket.emit('enter-room', { name, uid, roomID })
         }
         chatService.getAll().then(chats => setChats(chats))
-        socket.emit('user-info', {uid, name, roomID})
+        socket.emit('user-info', {uid, username, roomID})
     }, [])
 
+    //handle new messages received from socket
     useEffect(() => {
         socket.on('message', msg => {
             console.log('received messages')
@@ -46,6 +49,7 @@ const MessagesPage = () => {
         }
     }
 
+    //handle putting user in chat
     const joinChat = (room) => {
         console.log('joinChat: ', room)
         socket.emit('enter-room', { name, uid, room })

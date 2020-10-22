@@ -12,14 +12,14 @@ let clients = []
 
 io.on('connect', (socket) => {
 
-    socket.on('user-info', ({uid, name, roomID}, callback) => {
+    socket.on('user-info', ({uid, username, roomID}, callback) => {
         //console.log('Receiving user info: ', userID, name, roomID)
         let socketID = socket.id
         if (clients.filter(client => client.uid === uid)) {
             console.log('alrdy have this client')
             clients = clients.filter(client => client.uid !== uid)
         }
-        clients = clients.concat({name, uid, socketID })
+        clients = clients.concat({username, uid, socketID })
         console.log('clients: ', clients)
     })
 
