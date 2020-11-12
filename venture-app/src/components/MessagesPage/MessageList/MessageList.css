@@ -10,6 +10,7 @@
     margin-top: -10%;
     margin-left: 10.75%;
     margin-right: 26.725%;
+    padding-top: 0;
     height: 500px;
 }
 
@@ -38,4 +39,13 @@
     border-style: groove;
     border-color: lightblue;
     background-color: gainsboro;
+}
+
+.messages {
+    position: absolute;
+    margin-top: -10%;
+    margin-left: 10.75%;
+    margin-right: 26.725%;
+    width: 100%;
+    top: 0;
 }

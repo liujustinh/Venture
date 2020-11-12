@@ -8,7 +8,7 @@ const socketHelper = require('./utils/socket_helper')
 const server = http.createServer(app)
 const io = socketio(server)
 let clients = []
-
+let random_clients = []
 
 io.on('connect', (socket) => {
 
@@ -24,8 +24,15 @@ io.on('connect', (socket) => {
     })
 
     socket.on('join-random', ({ name, uid }, callback) => {
-        console.log('Join random: ', name)
+        console.log('Join random: ', uid)
+        let client = clients.filter(client => client.uid === uid)
+        if (random_clients.filter(client => client.uid === uid)) {
+            console.log('alrdy have this random client')
+            random_clients = random_clients.filter(client => client.uid !== uid)
+        }
+        random_clients = random_clients.concat(client[0])
         
+        console.log('random clients: ', random_clients)
     })
 
     socket.on('create-room', ({ name, uid, room}, callback) => {
