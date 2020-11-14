@@ -18,6 +18,7 @@ Venture-app (front-end application)
 --------------------------
 - Install with npm and run as normal
 ```sh
+cd venture-app
 npm install
 npm start
 ```
@@ -25,6 +26,7 @@ npm start
 Venture-server (back-end server)
 ------------------------------- 
 ```sh
+cd venture-server
 npm install
 npm run server
 ```
