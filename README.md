@@ -22,7 +22,7 @@ npm install
 npm start
 ```
 
-Venture-app (back-end server)
+Venture-server (back-end server)
 ------------------------------- 
 ```sh
 npm install
